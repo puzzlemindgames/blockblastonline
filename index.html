@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Block Blast Mini – Play Free Online Puzzle Game</title>
+    <meta name="description"
+        content="Play Block Blast Mini free online. Drag and drop block pieces onto the 8×8 grid, clear rows and columns, build combos and beat your high score. No download needed.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://puzzlemindgames.github.io/blockblastonline/">
+    <meta property="og:title" content="Block Blast Mini – Free Online Puzzle Game">
+    <meta property="og:description"
+        content="Play Block Blast Mini free online. Place block shapes on the grid, clear lines, and chase combos.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://puzzlemindgames.github.io/blockblastonline/">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Block Blast Mini – Free Online Puzzle Game">
+    <meta name="twitter:description"
+        content="Drag and drop block pieces, clear rows and columns, build combos. Play free in your browser.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"Block Blast Mini",
+  "description":"Free online block puzzle game. Place shapes on the 8×8 grid, clear lines, and score combos.",
+  "applicationCategory":"Game",
+  "operatingSystem":"Any",
+  "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}
+}
+</script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background: #0a0e1a;
+            color: #e2e8f0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ===== HEADER ===== */
+        .site-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            border-bottom: 1px solid rgba(99, 102, 241, .25);
+            padding: 10px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .site-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #6366f1, #a78bfa, #6366f1, transparent);
+        }
+
+        .site-header .logo {
+            font-size: 26px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #a78bfa, #6366f1, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -.5px;
+        }
+
+        .site-header .logo-icon {
+            font-size: 28px;
+            filter: drop-shadow(0 0 8px rgba(99, 102, 241, .5));
+        }
+
+        /* ===== MAIN CONTAINER ===== */
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 12px 16px;
+        }
+
+        .hero-text {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .hero-text h1 {
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #c7d2fe, #e0e7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 4px;
+        }
+
+        .hero-text p {
+            color: #94a3b8;
+            font-size: 13px;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* ===== GAME AREA ===== */
+        .game-wrapper {
+            background: linear-gradient(145deg, rgba(30, 27, 75, .5), rgba(15, 23, 42, .8));
+            border: 1px solid rgba(99, 102, 241, .15);
+            border-radius: 16px;
+            padding: 14px 16px;
+            backdrop-filter: blur(10px);
+            margin-bottom: 20px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, .4);
+        }
+
+        /* Score bar */
+        .score-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .score-box {
+            background: rgba(99, 102, 241, .1);
+            border: 1px solid rgba(99, 102, 241, .2);
+            border-radius: 10px;
+            padding: 6px 16px;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .score-box .label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #818cf8;
+            font-weight: 600;
+        }
+
+        .score-box .value {
+            font-size: 20px;
+            font-weight: 800;
+            color: #e0e7ff;
+            margin-top: 1px;
+        }
+
+        .combo-toast {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s, top .5s;
+            z-index: 100;
+            text-shadow: 0 0 30px rgba(245, 158, 11, .3);
+        }
+
+        .combo-toast.show {
+            opacity: 1;
+            top: 16%;
+        }
+
+        /* Board */
+        .board {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 2px;
+            max-width: 360px;
+            margin: 0 auto 12px;
+            background: rgba(15, 23, 42, .6);
+            border-radius: 10px;
+            padding: 4px;
+            border: 1px solid rgba(99, 102, 241, .1);
+        }
+
+        .cell {
+            aspect-ratio: 1;
+            background: #1a1f35;
+            border-radius: 5px;
+            transition: background .15s, transform .15s, box-shadow .15s;
+            position: relative;
+        }
+
+        .cell.filled {
+            border-radius: 6px;
+            box-shadow: inset 0 -2px 4px rgba(0, 0, 0, .3), 0 1px 3px rgba(0, 0, 0, .2);
+        }
+
+        .cell.preview {
+            background: rgba(56, 189, 248, .3) !important;
+            box-shadow: 0 0 12px rgba(56, 189, 248, .2);
+        }
+
+        .cell.invalid-preview {
+            background: rgba(239, 68, 68, .25) !important;
+            box-shadow: 0 0 8px rgba(239, 68, 68, .15);
+        }
+
+        .cell.clearing {
+            animation: clearPop .4s ease forwards;
+        }
+
+        @keyframes clearPop {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.15);
+                opacity: .7;
+            }
+
+            100% {
+                transform: scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Pieces tray */
+        .pieces-tray {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            min-height: 70px;
+        }
+
+        .piece-slot {
+            background: rgba(30, 27, 75, .4);
+            border: 1px solid rgba(99, 102, 241, .12);
+            border-radius: 10px;
+            padding: 8px;
+            min-width: 60px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color .2s, box-shadow .2s, opacity .3s;
+        }
+
+        .piece-slot:hover {
+            border-color: rgba(99, 102, 241, .3);
+            box-shadow: 0 0 16px rgba(99, 102, 241, .1);
+        }
+
+        .piece-slot.used {
+            opacity: .15;
+            pointer-events: none;
+        }
+
+        .piece {
+            display: grid;
+            gap: 2px;
+            cursor: grab;
+            transition: transform .15s;
+        }
+
+        .piece:active {
+            cursor: grabbing;
+            transform: scale(1.05);
+        }
+
+        .piece .block {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            box-shadow: inset 0 -2px 3px rgba(0, 0, 0, .25), 0 1px 2px rgba(0, 0, 0, .15);
+        }
+
+        /* Piece colors */
+        .color-0 .block {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+        }
+
+        .color-0.filled {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+        }
+
+        .color-1 .block {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+        }
+
+        .color-1.filled {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+        }
+
+        .color-2 .block {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .color-2.filled {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .color-3 .block {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .color-3.filled {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .color-4 .block {
+            background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+        }
+
+        .color-4.filled {
+            background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+        }
+
+        .color-5 .block {
+            background: linear-gradient(135deg, #a78bfa, #7c3aed);
+        }
+
+        .color-5.filled {
+            background: linear-gradient(135deg, #a78bfa, #7c3aed);
+        }
+
+        .color-6 .block {
+            background: linear-gradient(135deg, #f472b6, #ec4899);
+        }
+
+        .color-6.filled {
+            background: linear-gradient(135deg, #f472b6, #ec4899);
+        }
+
+        /* Buttons */
+        .game-btn {
+            padding: 8px 22px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform .15s, box-shadow .2s;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+
+        .game-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, .3);
+        }
+
+        .game-btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-restart {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+            margin-top: 10px;
+        }
+
+        .btn-play {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            font-size: 16px;
+            padding: 14px 36px;
+        }
+
+        /* Game Over Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, .7);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: linear-gradient(145deg, #1e1b4b, #0f172a);
+            border: 1px solid rgba(99, 102, 241, .25);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            max-width: 360px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .6);
+            animation: modalIn .3s ease;
+        }
+
+        @keyframes modalIn {
+            from {
+                transform: scale(.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal h2 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #f87171;
+            margin-bottom: 8px;
+        }
+
+        .modal .final-score {
+            font-size: 48px;
+            font-weight: 800;
+            color: #e0e7ff;
+            margin: 12px 0;
+        }
+
+        .modal .best {
+            font-size: 14px;
+            color: #818cf8;
+            margin-bottom: 24px;
+        }
+
+        /* ===== CONTENT SECTIONS ===== */
+        .content-section {
+            background: linear-gradient(145deg, rgba(30, 27, 75, .3), rgba(15, 23, 42, .6));
+            border: 1px solid rgba(99, 102, 241, .1);
+            border-radius: 16px;
+            padding: 32px 28px;
+            margin-bottom: 24px;
+        }
+
+        .content-section h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #c7d2fe;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .content-section h2 .icon {
+            font-size: 24px;
+        }
+
+        .content-section p {
+            color: #94a3b8;
+            line-height: 1.7;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .content-section ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 12px;
+        }
+
+        .content-section ul li {
+            padding: 8px 0 8px 28px;
+            position: relative;
+            color: #94a3b8;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        .content-section ul li::before {
+            content: '▸';
+            position: absolute;
+            left: 8px;
+            color: #6366f1;
+            font-weight: bold;
+        }
+
+        .content-section a.solver-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: transform .15s, box-shadow .2s;
+            margin-top: 8px;
+        }
+
+        .content-section a.solver-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, .35);
+        }
+
+        /* ===== FOOTER ===== */
+        .site-footer {
+            background: linear-gradient(135deg, #0f172a, #1e1b4b);
+            border-top: 1px solid rgba(99, 102, 241, .15);
+            padding: 28px 24px;
+            text-align: center;
+        }
+
+        .site-footer p {
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .site-footer a {
+            color: #818cf8;
+            text-decoration: none;
+        }
+
+        .site-footer a:hover {
+            color: #a78bfa;
+            text-decoration: underline;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media(max-width:520px) {
+            .board {
+                gap: 2px;
+                padding: 4px;
+                max-width: 95vw;
+            }
+
+            .piece .block {
+                width: 16px;
+                height: 16px;
+            }
+
+            .piece-slot {
+                padding: 8px;
+                min-width: 60px;
+                min-height: 60px;
+            }
+
+            .score-bar {
+                gap: 12px;
+            }
+
+            .score-box {
+                padding: 8px 14px;
+                min-width: 95px;
+            }
+
+            .score-box .value {
+                font-size: 20px;
+            }
+
+            .content-section {
+                padding: 24px 18px;
+            }
+        }
+
+        /* Drag ghost hidden */
+        .drag-ghost {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="site-header">
+        <span class="logo-icon">🧩</span>
+        <span class="logo">Block Blast Mini</span>
+    </header>
+
+    <!-- ===== MAIN ===== -->
+    <main class="container">
+
+        <section class="hero-text">
+            <h1>Play Block Blast Mini Online</h1>
+            <p>Drag block pieces onto the Board. Clear full rows and columns to score points.</p>
+        </section>
+
+        <!-- Game Area -->
+        <section class="game-wrapper" aria-label="Block Blast Game">
+
+            <div class="score-bar">
+                <div class="score-box">
+                    <div class="label">Score</div>
+                    <div class="value" id="score">0</div>
+                </div>
+                <div class="score-box">
+                    <div class="label">Best</div>
+                    <div class="value" id="best">0</div>
+                </div>
+            </div>
+
+            <div id="board" class="board" role="grid" aria-label="Game Board"></div>
+
+            <div id="pieces" class="pieces-tray" aria-label="Available Pieces"></div>
+
+            <div style="text-align:center;">
+                <button class="game-btn btn-restart" id="restartBtn" onclick="restart()">↻ Restart</button>
+            </div>
+
+        </section>
+
+        <div class="combo-toast" id="comboToast"></div>
+
+        <!-- ===== CONTENT: GAME BASICS ===== -->
+        <section class="content-section">
+            <h2><span class="icon">📖</span> Block Blast Mini Game Basics</h2>
+            <p>
+                Block Blast Mini is a free browser-based puzzle game inspired by the popular Block Blast.
+                The goal is simple — place block shapes on the grid and clear as many lines as possible.
+            </p>
+            <h3 style="color:#a5b4fc;font-size:16px;margin:16px 0 10px;font-weight:600;">How to Play</h3>
+            <ul>
+                <li>Each round you receive <strong style="color:#e0e7ff;">3 block pieces</strong> of random shapes.</li>
+                <li>Drag a piece onto the 8×8 board to place it in a valid position.</li>
+                <li>You must place <strong style="color:#e0e7ff;">all 3 pieces</strong> before a new set appears.</li>
+                <li>When a full <strong style="color:#e0e7ff;">row or column</strong> is completed, it clears and you
+                    earn points.</li>
+                <li>Clear multiple lines at once for a <strong style="color:#e0e7ff;">combo bonus</strong>.</li>
+                <li>The game ends when no remaining piece can fit on the board.</li>
+            </ul>
+            <h3 style="color:#a5b4fc;font-size:16px;margin:16px 0 10px;font-weight:600;">Tips & Strategy</h3>
+            <ul>
+                <li>Keep the center of the board open for larger pieces.</li>
+                <li>Plan ahead — think about all three pieces before placing the first.</li>
+                <li>Avoid stacking blocks in corners early, as they become hard to clear.</li>
+                <li>Prioritise setting up multi-line clears for bigger combo scores.</li>
+            </ul>
+        </section>
+
+        <!-- ===== CONTENT: SOLVER ===== -->
+        <section class="content-section">
+            <h2><span class="icon">🤖</span> Block Blast Solver</h2>
+            <p>
+                When your board fills up and every move feels risky, it helps to have a second opinion.
+                A Block Blast solver can analyze your current board and available pieces to find the
+                best possible placements — helping you clear more lines and extend your game.
+            </p>
+            <p>
+                Whether you're stuck on a tricky layout or just want to improve your strategy,
+                the solver evaluates thousands of possible positions in seconds.
+            </p>
+            <a href="https://www.aiblockblastsolver.com" class="solver-link">
+                🔍 Try the AI Block Blast Solver
+            </a>
+        </section>
+
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="site-footer">
+        <p>
+            Block Blast Mini &copy; 2026 &mdash; A free fan-made puzzle game.
+            <br>
+            Need help with tricky boards? Try the
+            <a href="https://www.aiblockblastsolver.com">AI Block Blast Solver</a>.
+        </p>
+    </footer>
+
+    <!-- ===== GAME OVER MODAL ===== -->
+    <div class="modal-overlay" id="gameOverModal">
+        <div class="modal">
+            <h2>Game Over!</h2>
+            <div class="final-score" id="finalScore">0</div>
+            <p class="best" id="bestLine">Best: 0</p>
+            <button class="game-btn btn-play" onclick="restart()">▶ Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        /* ========================================
+           BLOCK BLAST MINI – GAME ENGINE
+           ======================================== */
+
+        const BOARD_SIZE = 8;
+        const COLORS = ['color-0', 'color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6'];
+
+        // Shapes: array of [col, row] offsets
+        const SHAPES = [
+            // Singles & small
+            [[0, 0]],
+            // Horizontal lines
+            [[0, 0], [1, 0]],
+            [[0, 0], [1, 0], [2, 0]],
+            [[0, 0], [1, 0], [2, 0], [3, 0]],
+            [[0, 0], [1, 0], [2, 0], [3, 0], [4, 0]],
+            // Vertical lines
+            [[0, 0], [0, 1]],
+            [[0, 0], [0, 1], [0, 2]],
+            [[0, 0], [0, 1], [0, 2], [0, 3]],
+            [[0, 0], [0, 1], [0, 2], [0, 3], [0, 4]],
+            // Squares
+            [[0, 0], [1, 0], [0, 1], [1, 1]],
+            [[0, 0], [1, 0], [2, 0], [0, 1], [1, 1], [2, 1], [0, 2], [1, 2], [2, 2]],
+            // L-shapes
+            [[0, 0], [0, 1], [1, 1]],
+            [[0, 0], [1, 0], [0, 1]],
+            [[0, 0], [1, 0], [1, 1]],
+            [[0, 0], [0, 1], [1, 0]],
+            // Bigger L
+            [[0, 0], [0, 1], [0, 2], [1, 2]],
+            [[0, 0], [0, 1], [0, 2], [1, 0]],
+            [[0, 0], [1, 0], [2, 0], [2, 1]],
+            [[0, 0], [1, 0], [2, 0], [0, 1]],
+            // T-shapes
+            [[0, 0], [1, 0], [2, 0], [1, 1]],
+            [[0, 0], [0, 1], [0, 2], [1, 1]],
+            // S / Z shapes
+            [[0, 0], [1, 0], [1, 1], [2, 1]],
+            [[0, 1], [1, 1], [1, 0], [2, 0]],
+        ];
+
+        let board = [];       // 0 = empty, colorIndex+1 = filled
+        let score = 0;
+        let best = parseInt(localStorage.getItem('bbm_best')) || 0;
+        let roundPieces = []; // {shape, colorIdx, used}
+        let currentDrag = null; // {pieceIdx, shape, colorIdx}
+
+        // ====== INIT ======
+        function init() {
+            board = [];
+            for (let r = 0; r < BOARD_SIZE; r++) {
+                board[r] = new Array(BOARD_SIZE).fill(0);
+            }
+            score = 0;
+            updateScoreUI();
+            renderBoard();
+            spawnPieces();
+        }
+
+        // ====== BOARD RENDERING ======
+        function renderBoard() {
+            const el = document.getElementById('board');
+            el.innerHTML = '';
+            for (let r = 0; r < BOARD_SIZE; r++) {
+                for (let c = 0; c < BOARD_SIZE; c++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.dataset.r = r;
+                    cell.dataset.c = c;
+                    if (board[r][c]) {
+                        cell.classList.add('filled', COLORS[board[r][c] - 1]);
+                    }
+                    // Drop events
+                    cell.addEventListener('dragover', onDragOver);
+                    cell.addEventListener('dragleave', onDragLeave);
+                    cell.addEventListener('drop', onDrop);
+                    el.appendChild(cell);
+                }
+            }
+        }
+
+        function refreshBoard() {
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach(cell => {
+                const r = parseInt(cell.dataset.r);
+                const c = parseInt(cell.dataset.c);
+                cell.className = 'cell';
+                if (board[r][c]) {
+                    cell.classList.add('filled', COLORS[board[r][c] - 1]);
+                }
+            });
+        }
+
+        // ====== SCORE ======
+        function updateScoreUI() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('best').textContent = best;
+        }
+
+        function saveBest() {
+            if (score > best) {
+                best = score;
+                localStorage.setItem('bbm_best', best);
+            }
+            updateScoreUI();
+        }
+
+        // ====== PIECES ======
+        function spawnPieces() {
+            roundPieces = [];
+            for (let i = 0; i < 3; i++) {
+                const shape = SHAPES[Math.floor(Math.random() * SHAPES.length)];
+                const colorIdx = Math.floor(Math.random() * COLORS.length);
+                roundPieces.push({ shape, colorIdx, used: false });
+            }
+            renderPieces();
+        }
+
+        function renderPieces() {
+            const tray = document.getElementById('pieces');
+            tray.innerHTML = '';
+            roundPieces.forEach((p, idx) => {
+                const slot = document.createElement('div');
+                slot.className = 'piece-slot' + (p.used ? ' used' : '');
+                slot.id = 'slot-' + idx;
+
+                if (!p.used) {
+                    const piece = document.createElement('div');
+                    piece.className = 'piece ' + COLORS[p.colorIdx];
+                    piece.draggable = true;
+                    piece.dataset.idx = idx;
+
+                    const maxC = Math.max(...p.shape.map(b => b[0]));
+                    const maxR = Math.max(...p.shape.map(b => b[1]));
+                    piece.style.gridTemplateColumns = `repeat(${maxC + 1}, 20px)`;
+                    piece.style.gridTemplateRows = `repeat(${maxR + 1}, 20px)`;
+
+                    // Fill grid cells
+                    for (let r = 0; r <= maxR; r++) {
+                        for (let c = 0; c <= maxC; c++) {
+                            const hasBlock = p.shape.some(b => b[0] === c && b[1] === r);
+                            const div = document.createElement('div');
+                            if (hasBlock) {
+                                div.className = 'block';
+                            } else {
+                                div.style.cssText = 'width:20px;height:20px;';
+                            }
+                            div.style.gridColumn = c + 1;
+                            div.style.gridRow = r + 1;
+                            piece.appendChild(div);
+                        }
+                    }
+
+                    // Drag events
+                    piece.addEventListener('dragstart', (e) => {
+                        currentDrag = { pieceIdx: idx, shape: p.shape, colorIdx: p.colorIdx };
+                        // Hide default ghost
+                        const ghost = document.createElement('div');
+                        ghost.className = 'drag-ghost';
+                        document.body.appendChild(ghost);
+                        e.dataTransfer.setDragImage(ghost, 0, 0);
+                        setTimeout(() => ghost.remove(), 0);
+                        piece.style.opacity = '0.5';
+                    });
+                    piece.addEventListener('dragend', () => {
+                        piece.style.opacity = '1';
+                        clearPreview();
+                        currentDrag = null;
+                    });
+
+                    // Touch events
+                    piece.addEventListener('touchstart', onTouchStart, { passive: false });
+                    piece.addEventListener('touchmove', onTouchMove, { passive: false });
+                    piece.addEventListener('touchend', onTouchEnd, { passive: false });
+
+                    slot.appendChild(piece);
+                }
+
+                tray.appendChild(slot);
+            });
+        }
+
+        // ====== PLACEMENT LOGIC ======
+        function canPlace(shape, anchorR, anchorC) {
+            for (const [dc, dr] of shape) {
+                const nr = anchorR + dr;
+                const nc = anchorC + dc;
+                if (nr < 0 || nr >= BOARD_SIZE || nc < 0 || nc >= BOARD_SIZE) return false;
+                if (board[nr][nc]) return false;
+            }
+            return true;
+        }
+
+        function placeShape(shape, anchorR, anchorC, colorIdx) {
+            for (const [dc, dr] of shape) {
+                board[anchorR + dr][anchorC + dc] = colorIdx + 1;
+            }
+            score += shape.length * 10;
+        }
+
+        function canAnyPieceFit() {
+            for (const p of roundPieces) {
+                if (p.used) continue;
+                for (let r = 0; r < BOARD_SIZE; r++) {
+                    for (let c = 0; c < BOARD_SIZE; c++) {
+                        if (canPlace(p.shape, r, c)) return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        // ====== LINE CLEARING ======
+        function clearLines() {
+            let rowsToClear = [];
+            let colsToClear = [];
+
+            for (let r = 0; r < BOARD_SIZE; r++) {
+                if (board[r].every(v => v)) rowsToClear.push(r);
+            }
+            for (let c = 0; c < BOARD_SIZE; c++) {
+                let full = true;
+                for (let r = 0; r < BOARD_SIZE; r++) {
+                    if (!board[r][c]) { full = false; break; }
+                }
+                if (full) colsToClear.push(c);
+            }
+
+            const totalLines = rowsToClear.length + colsToClear.length;
+            if (totalLines === 0) return;
+
+            // Combo scoring
+            const lineScore = 100;
+            let comboMultiplier = totalLines > 1 ? totalLines : 1;
+            score += lineScore * totalLines * comboMultiplier;
+
+            // Show combo toast
+            if (totalLines > 1) showCombo(totalLines);
+
+            // Collect cells to clear for animation
+            let cellsToClear = new Set();
+            for (const r of rowsToClear) {
+                for (let c = 0; c < BOARD_SIZE; c++) cellsToClear.add(r + ',' + c);
+            }
+            for (const c of colsToClear) {
+                for (let r = 0; r < BOARD_SIZE; r++) cellsToClear.add(r + ',' + c);
+            }
+
+            // Animate
+            cellsToClear.forEach(key => {
+                const [r, c] = key.split(',').map(Number);
+                const cell = document.querySelector(`.cell[data-r='${r}'][data-c='${c}']`);
+                if (cell) cell.classList.add('clearing');
+            });
+
+            // Clear board data after animation
+            setTimeout(() => {
+                for (const r of rowsToClear) board[r].fill(0);
+                for (const c of colsToClear) {
+                    for (let r = 0; r < BOARD_SIZE; r++) board[r][c] = 0;
+                }
+                refreshBoard();
+            }, 350);
+        }
+
+        function showCombo(n) {
+            const toast = document.getElementById('comboToast');
+            toast.textContent = n + 'x Combo! 🔥';
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 1200);
+        }
+
+        // ====== GAME OVER ======
+        function gameOver() {
+            saveBest();
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('bestLine').textContent = 'Best: ' + best;
+            document.getElementById('gameOverModal').classList.add('active');
+        }
+
+        function restart() {
+            document.getElementById('gameOverModal').classList.remove('active');
+            saveBest();
+            init();
+        }
+
+        // ====== DRAG & DROP (Mouse) ======
+        function onDragOver(e) {
+            e.preventDefault();
+            if (!currentDrag) return;
+            clearPreview();
+
+            const r = parseInt(e.target.dataset.r);
+            const c = parseInt(e.target.dataset.c);
+            if (isNaN(r) || isNaN(c)) return;
+
+            const valid = canPlace(currentDrag.shape, r, c);
+            for (const [dc, dr] of currentDrag.shape) {
+                const nr = r + dr;
+                const nc = c + dc;
+                if (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE) {
+                    const cell = document.querySelector(`.cell[data-r='${nr}'][data-c='${nc}']`);
+                    if (cell) cell.classList.add(valid ? 'preview' : 'invalid-preview');
+                }
+            }
+        }
+
+        function onDragLeave() {
+            // Preview cleared on next dragover or drop
+        }
+
+        function onDrop(e) {
+            e.preventDefault();
+            if (!currentDrag) return;
+
+            const r = parseInt(e.target.dataset.r);
+            const c = parseInt(e.target.dataset.c);
+            if (isNaN(r) || isNaN(c)) return;
+
+            if (canPlace(currentDrag.shape, r, c)) {
+                placeShape(currentDrag.shape, r, c, currentDrag.colorIdx);
+                roundPieces[currentDrag.pieceIdx].used = true;
+                clearPreview();
+                refreshBoard();
+                clearLines();
+                updateScoreUI();
+                renderPieces();
+
+                // Check if all 3 used → spawn new round
+                if (roundPieces.every(p => p.used)) {
+                    setTimeout(() => {
+                        spawnPieces();
+                        if (!canAnyPieceFit()) gameOver();
+                    }, 400);
+                } else {
+                    // Check if remaining pieces can fit
+                    setTimeout(() => {
+                        if (!canAnyPieceFit()) gameOver();
+                    }, 400);
+                }
+            }
+
+            currentDrag = null;
+            clearPreview();
+        }
+
+        function clearPreview() {
+            document.querySelectorAll('.cell').forEach(c => {
+                c.classList.remove('preview', 'invalid-preview');
+            });
+        }
+
+        // ====== TOUCH SUPPORT ======
+        let touchDrag = null;
+        let touchClone = null;
+
+        function onTouchStart(e) {
+            e.preventDefault();
+            const piece = e.currentTarget;
+            const idx = parseInt(piece.dataset.idx);
+            const p = roundPieces[idx];
+            touchDrag = { pieceIdx: idx, shape: p.shape, colorIdx: p.colorIdx, el: piece };
+
+            // Create floating clone
+            touchClone = piece.cloneNode(true);
+            touchClone.style.position = 'fixed';
+            touchClone.style.pointerEvents = 'none';
+            touchClone.style.zIndex = '999';
+            touchClone.style.opacity = '0.8';
+            touchClone.style.transform = 'scale(1.1)';
+            document.body.appendChild(touchClone);
+
+            const touch = e.touches[0];
+            positionClone(touch.clientX, touch.clientY);
+            piece.style.opacity = '0.3';
+        }
+
+        function onTouchMove(e) {
+            e.preventDefault();
+            if (!touchDrag) return;
+            const touch = e.touches[0];
+            positionClone(touch.clientX, touch.clientY);
+            clearPreview();
+
+            // Find cell under finger (offset up so user can see)
+            const offsetY = -60;
+            const el = document.elementFromPoint(touch.clientX, touch.clientY + offsetY);
+            if (el && el.classList.contains('cell')) {
+                const r = parseInt(el.dataset.r);
+                const c = parseInt(el.dataset.c);
+                const valid = canPlace(touchDrag.shape, r, c);
+                for (const [dc, dr] of touchDrag.shape) {
+                    const nr = r + dr;
+                    const nc = c + dc;
+                    if (nr >= 0 && nr < BOARD_SIZE && nc >= 0 && nc < BOARD_SIZE) {
+                        const cell = document.querySelector(`.cell[data-r='${nr}'][data-c='${nc}']`);
+                        if (cell) cell.classList.add(valid ? 'preview' : 'invalid-preview');
+                    }
+                }
+                touchDrag.lastR = r;
+                touchDrag.lastC = c;
+            }
+        }
+
+        function onTouchEnd(e) {
+            e.preventDefault();
+            if (!touchDrag) return;
+
+            if (touchClone) { touchClone.remove(); touchClone = null; }
+            touchDrag.el.style.opacity = '1';
+
+            const r = touchDrag.lastR;
+            const c = touchDrag.lastC;
+
+            if (r !== undefined && c !== undefined && canPlace(touchDrag.shape, r, c)) {
+                placeShape(touchDrag.shape, r, c, touchDrag.colorIdx);
+                roundPieces[touchDrag.pieceIdx].used = true;
+                clearPreview();
+                refreshBoard();
+                clearLines();
+                updateScoreUI();
+                renderPieces();
+
+                if (roundPieces.every(p => p.used)) {
+                    setTimeout(() => {
+                        spawnPieces();
+                        if (!canAnyPieceFit()) gameOver();
+                    }, 400);
+                } else {
+                    setTimeout(() => {
+                        if (!canAnyPieceFit()) gameOver();
+                    }, 400);
+                }
+            } else {
+                clearPreview();
+            }
+
+            touchDrag = null;
+        }
+
+        function positionClone(x, y) {
+            if (!touchClone) return;
+            touchClone.style.left = (x - 30) + 'px';
+            touchClone.style.top = (y - 80) + 'px';
+        }
+
+        // ====== START ======
+        document.getElementById('best').textContent = best;
+        init();
+    </script>
+
+</body>
+
+</html>
