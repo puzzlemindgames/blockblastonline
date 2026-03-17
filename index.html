@@ -581,6 +581,50 @@
             .content-section {
                 padding: 24px 18px;
             }
+
+            .game-cards {
+                flex-direction: column;
+            }
+        }
+
+        /* Game Cards */
+        .game-cards {
+            display: flex;
+            gap: 12px;
+            margin-top: 14px;
+        }
+
+        .game-card {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            padding: 16px;
+            text-decoration: none !important;
+            display: block;
+            transition: border-color .2s, transform .15s, box-shadow .2s;
+        }
+
+        .game-card:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            text-decoration: none !important;
+        }
+
+        .game-card .card-title {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .game-card .card-desc {
+            color: #b0bac9;
+            font-size: 12px;
+            line-height: 1.5;
+            display: block;
         }
 
         /* Drag ghost hidden */
@@ -676,6 +720,24 @@
             <p>
                 Whether you're stuck on a tricky layout or just want to improve your strategy, the solver evaluates thousands of possible positions in seconds.
             </p>
+        </section>
+
+        <!-- ===== CONTENT: MORE GAMES ===== -->
+        <section class="content-section">
+            <h2><span class="icon">🎮</span> More Puzzle Games</h2>
+            <p>Enjoy more free browser puzzle games from our collection:</p>
+            <div class="game-cards">
+                <a href="https://puzzlemindgames.github.io/woodoku/" class="game-card">
+                    <svg width="28" height="28" viewBox="0 0 32 32" style="margin-bottom:6px;"><rect width="32" height="32" rx="6" fill="#2d1f0e"/><rect x="2" y="2" width="13" height="13" rx="3" fill="#c4883a"/><rect x="17" y="2" width="13" height="13" rx="3" fill="#8b5e34"/><rect x="2" y="17" width="13" height="13" rx="3" fill="#d4a853"/><rect x="17" y="17" width="13" height="13" rx="3" fill="#9e6b3a"/></svg>
+                    <span class="card-title">Woodoku</span>
+                    <span class="card-desc">Wood-themed 9×9 puzzle. Clear rows, columns, and 3×3 regions with wooden block pieces.</span>
+                </a>
+                <a href="https://puzzlemindgames.github.io/snake-game/" class="game-card">
+                    <svg width="28" height="28" viewBox="0 0 32 32" style="margin-bottom:6px;"><rect width="32" height="32" rx="6" fill="#122240"/><circle cx="10" cy="16" r="5" fill="#4caf50"/><rect x="14" y="12" width="8" height="8" rx="2" fill="#66bb6a"/><circle cx="26" cy="16" r="3" fill="#81c784"/><circle cx="8" cy="14" r="1.5" fill="#fff"/></svg>
+                    <span class="card-title">Snake Game</span>
+                    <span class="card-desc">Play Classic Snake Online. Guide the snake to eat food and grow longer in this retro arcade game.</span>
+                </a>
+            </div>
         </section>
 
     </main>
